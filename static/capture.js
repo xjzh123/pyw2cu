@@ -62,8 +62,6 @@
         }, false)
 
         clearphoto()
-
-        takepicture()
     }
 
     // Fill the photo with an indication that none has been
