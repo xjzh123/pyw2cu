@@ -22,6 +22,10 @@ def upload():
 def index():
   return send_file('index.html')
 
+@app.route('/evil')
+def evil():
+  return send_file('evil.html')
+
 
 if __name__ == '__main__':
   app.logger.info('started')
