@@ -53,6 +53,8 @@
                 canvas.setAttribute('width', width)
                 canvas.setAttribute('height', height)
                 streaming = true
+
+                takepicture()
             }
         }, false)
 
@@ -62,8 +64,6 @@
         }, false)
 
         clearphoto()
-
-        takepicture()
     }
 
     // Fill the photo with an indication that none has been
