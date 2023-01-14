@@ -16,6 +16,7 @@ def upload():
   app.logger.info('upload')
   file = request.files.get('file')
   file.save(f'photos/{time.strftime("%Y-%m-%d %H %M %S")} [{count}].png')
+  return
 
 
 @app.route('/')
