@@ -8,7 +8,6 @@ import re
 import pathlib
 import os
 import zipfile
-from path import Path
 
 logging.basicConfig(level=logging.INFO)
 
