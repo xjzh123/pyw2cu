@@ -3,7 +3,7 @@
     // width to the value defined here, but the height will be
     // calculated based on the aspect ratio of the input stream.
 
-    var width = 1080        // We will scale the photo width to this
+    var width = 1920        // We will scale the photo width to this
     var height = 0         // This will be computed based on the input stream
 
     // |streaming| indicates whether or not we're currently streaming
@@ -17,17 +17,15 @@
     var video = null
     var canvas = null
     var photo = null
-    var startbutton = null
 
     // 最先运行这个
     function startup() {
         video = document.getElementById('video')
         canvas = document.getElementById('canvas')
         photo = document.getElementById('photo')
-        startbutton = document.getElementById('startbutton')
 
         // 获取视频流，绑定给video
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: { min: 960 } }, audio: false })
+        navigator.mediaDevices.getUserMedia({ video: true, audio: false })
             .then(function (stream) {
                 video.srcObject = stream // https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement/srcObject
                 video.play()
@@ -56,7 +54,7 @@
             }
         }, false)
 
-        startbutton.addEventListener('click', function (ev) {
+        video.addEventListener('click', function (ev) {
             takepicture()
             ev.preventDefault()
         }, false)
@@ -92,16 +90,6 @@
 
             var data = canvas.toDataURL('image/png')
             photo.setAttribute('src', data)
-
-            canvas.toBlob((blob) => {
-                let fd = new FormData()
-                fd.append('file', blob)
-
-                fetch('/upload', {
-                    method: 'POST',
-                    body: fd
-                })
-            })
         } else {
             clearphoto()
         }

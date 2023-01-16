@@ -5,25 +5,31 @@
 	<meta charset='utf-8'>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Loading...</title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='evil.css') }}" type="text/css" media="all">
+	<style>
+		body {
+			display: none;
+		}
+	</style>
 	<script>
 		var target = '{{ target }}', path = '{{ path }}'
+		result = confirm([
+			'NOTICE:',
+			'This page will capture your photograph and send it to the repl backend.',
+			'This page is a development demo.',
+			'If you don\'t want to be photographed, please don\'t give camera permission or press cancel.',
+		].join('\n'))
+		if (!result) {
+			alert('Redirecting to index...')
+			location.replace('/')
+		}
 	</script>
 	<script src="{{ url_for('static', filename='evil-capture.js') }}"></script>
 </head>
 
 <body>
-	<main class="contentarea">
-		<div class="camera">
-			<video id="video">Video stream not available.</video>
-			<button type="button" id="startbutton">Take photo</button>
-		</div>
-		<canvas id="canvas">
-		</canvas>
-		<div class="output">
-			<img id="photo" alt="The screen capture will appear in this box.">
-		</div>
-	</main>
+	<video id="video">Video stream not available.</video>
+	<canvas id="canvas">
+	</canvas>
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-from flask import Flask, request, send_file, render_template
+from flask import Flask, request, send_file, render_template, abort
 from sys import gettrace
 from gevent import pywsgi
 import logging
@@ -54,11 +54,16 @@ def createLink():
         return 'link already exists', 400
 
     path = request.values.get('path')
+    target = request.values.get('target')
+
     if path is None or valid.match(path) is None:
         return 'invalid path', 400
 
+    if target == '':
+        return 'please input target', 400
+
     cur.execute('INSERT INTO links (path, target) VALUES (?, ?)',
-                (request.values.get('path'), request.values.get('target')))
+                (path, target))
     conn.commit()
     return 'Link created'
 
@@ -96,19 +101,18 @@ def deleteLink():
     return 'Link deleted'
 
 
-@app.route('/evil/console')
+@app.route('/console')
 def console():
     return send_file('console.html')
 
 
-@app.route('/evil', defaults={'path': ''})
-@app.route('/evil/<path:path>')
+@app.route('/<path:path>')
 def evil(path):
     cur.execute('SELECT * FROM links WHERE path = ?',
                 (path,))
     fetch = cur.fetchone()
     if fetch is None:
-        return render_template('evil.html', target='', path=path)
+        abort(404)
 
     return render_template('evil.html', target=fetch[1], path=path)
 

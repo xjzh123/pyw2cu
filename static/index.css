@@ -1,0 +1,30 @@
+#video {
+  border: 1px solid black;
+  margin: 10px;
+  width: 40%;
+  height: auto;
+  cursor: pointer;
+}
+
+#photo {
+  border: 1px solid black;
+  width: 40%;
+  height: auto;
+  margin: 10px;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#arrow {
+  height: 100%;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+#canvas {
+  display: none;
+}
