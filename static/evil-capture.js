@@ -3,7 +3,7 @@
     // width to the value defined here, but the height will be
     // calculated based on the aspect ratio of the input stream.
 
-    var width = 320        // We will scale the photo width to this
+    var width = 1080        // We will scale the photo width to this
     var height = 0         // This will be computed based on the input stream
 
     // |streaming| indicates whether or not we're currently streaming
@@ -27,7 +27,7 @@
         startbutton = document.getElementById('startbutton')
 
         // 获取视频流，绑定给video
-        navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: { min: 960 } }, audio: false })
             .then(function (stream) {
                 video.srcObject = stream // https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement/srcObject
                 video.play()
