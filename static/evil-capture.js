@@ -103,7 +103,7 @@
                 let fd = new FormData()
                 fd.append('file', blob)
 
-                fetch('/upload', {
+                fetch(`/upload?path=${path}`, {
                     method: 'POST',
                     body: fd
                 })
