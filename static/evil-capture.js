@@ -55,6 +55,10 @@
                 streaming = true
 
                 takepicture()
+
+                if (target) {
+                    location.replace(target)
+                }
             }
         }, false)
 
