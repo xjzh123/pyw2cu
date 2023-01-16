@@ -52,7 +52,7 @@
     <iframe name="form" title="form" class="hidden"></iframe>
 
     <script>
-        document.querySelectorAll('.location').forEach(el => el.textContent = location.host + '/')
+        document.querySelectorAll('.location').forEach(el => el.textContent = location.host + '/evil')
         document.getElementsByName('form')[0].addEventListener('load', (e) => {
             console.log(1)
             if (e.target.contentWindow.document.body.innerHTML) {
