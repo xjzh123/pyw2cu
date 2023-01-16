@@ -127,6 +127,18 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "path"
+version = "16.6.0"
+description = "A module wrapper for os.path"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+docs = ["sphinx (>=3.5)", "jaraco.packaging (>=9)", "rst.linker (>=1.9)", "furo", "jaraco.tidelift (>=1.4)"]
+testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-cov", "pytest-enabler (>=1.3)", "appdirs", "packaging", "pygments", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)", "pywin32", "pytest-flake8"]
+
+[[package]]
 name = "pycparser"
 version = "2.21"
 description = "C parser in Python"
@@ -188,7 +200,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "aa7081a82c2ad94bbad7f65ba58e763b0a26b6810481b4571e8baea827474342"
+content-hash = "23e70588abe9a20de6c7878ebb5eb0864977303c25d4acfdf87cd1e72165167b"
 
 [metadata.files]
 cffi = []
@@ -201,6 +213,7 @@ importlib-metadata = []
 itsdangerous = []
 jinja2 = []
 markupsafe = []
+path = []
 pycparser = []
 werkzeug = []
 zipp = []
